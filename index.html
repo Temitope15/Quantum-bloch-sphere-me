@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Bloch Sphere Visualizer</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="ui-container">
+        <h1>Bloch Sphere Visualizer</h1>
+        <p>Enter gates separated by spaces (e.g., H X Z Y)</p>
+        <div class="input-group">
+            <input type="text" id="gate-input" placeholder="H X Z" autocomplete="off">
+            <button id="run-btn">Run Sequence</button>
+            <button id="reset-btn">Reset |0></button>
+        </div>
+        <div id="status">State: |0></div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script src="index.js"></script>
+</body>
+</html>
