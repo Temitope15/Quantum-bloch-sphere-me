@@ -94,7 +94,10 @@ function startSequence(inputStr, title = null, desc = null) {
             expBox.classList.add('hidden');
         }
         
-        processNextGate();
+      processNextGate();
+      if (window.innerWidth <= 768) {
+                  uiContainer.classList.add('collapsed');
+              }
     } else {
         statusText.innerText = "Invalid gates. Use H, X, Y, Z.";
     }
@@ -129,6 +132,13 @@ function processNextGate() {
     const operation = gates[gate];
     targetDir = currentDir.clone().applyAxisAngle(operation.axis, operation.angle);
 }
+
+const uiContainer = document.getElementById('ui-container');
+const toggleBtn = document.getElementById('toggle-btn');
+
+toggleBtn.addEventListener('click', () => {
+    uiContainer.classList.toggle('collapsed');
+});
 
 //  rendering
 function animate() {

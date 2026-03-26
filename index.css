@@ -163,6 +163,32 @@ button:hover {
     line-height: 1.4;
 }
 
+.ui-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ui-header h1 {
+    margin-bottom: 0; 
+}
+
+#toggle-btn {
+    background: none;
+    border: none;
+    color: #00e6ff;
+    font-size: 1.2rem;
+    padding: 0 10px;
+    width: auto;
+    flex: none;
+}
+
+#toggle-btn:hover {
+    background: transparent;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
     #ui-container {
         top: auto;
@@ -173,30 +199,28 @@ button:hover {
         max-width: none;
         padding: 15px;
         box-sizing: border-box;
+     
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    h1 {
-        font-size: 1rem;
-        margin-bottom: 5px;
+    #ui-container.collapsed {
+        transform: translateY(calc(100% - 60px));
     }
 
-    p {
-        font-size: 0.75rem;
-        margin-bottom: 10px;
+    #toggle-btn {
+        transition: transform 0.3s ease;
+    }
+    #ui-container.collapsed #toggle-btn {
+        transform: rotate(180deg);
     }
 
-    input, button {
-        padding: 12px;
-        font-size: 1rem;
-    }
-
+    p { font-size: 0.75rem; margin-bottom: 10px; }
+    input, button { padding: 12px; font-size: 1rem; }
+    
     .input-group {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
-
-    #gate-input {
-        grid-column: span 2;
-    }
+    #gate-input { grid-column: span 2; }
 }
