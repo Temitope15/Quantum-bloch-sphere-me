@@ -97,3 +97,68 @@ button:hover {
     font-weight: bold;
     color: #00ff88;
 }
+
+
+.tutorials {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.tutorials h3 {
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.preset-btn {
+    display: inline-block;
+    background: #2a2a35;
+    color: #00e6ff;
+    border: 1px solid #00e6ff;
+    padding: 6px 10px;
+    margin: 0 5px 8px 0;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    flex: none; 
+    width: auto;
+}
+
+.preset-btn:hover {
+    background: #00e6ff;
+    color: #000;
+}
+
+#explanation-box {
+    margin-top: 15px;
+    background: rgba(0, 230, 255, 0.1);
+    border-left: 3px solid #00e6ff;
+    padding: 12px;
+    border-radius: 4px;
+    transition: opacity 0.3s ease;
+}
+
+#explanation-box.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+#exp-title {
+    margin: 0 0 5px 0;
+    color: #00e6ff;
+    font-size: 0.95rem;
+}
+
+#exp-text {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #ddd;
+    line-height: 1.4;
+}

@@ -11,17 +11,31 @@
 <body>
     <div id="ui-container">
         <h1>Bloch Sphere Visualizer</h1>
-        <p>Enter gates separated by spaces (e.g., H X Z Y)</p>
+        <p>Type a sequence (H, X, Y, Z) or try a tutorial below:</p>
+        
         <div class="input-group">
-            <input type="text" id="gate-input" placeholder="H X Z" autocomplete="off">
-            <button id="run-btn">Run Sequence</button>
-            <button id="reset-btn">Reset |0></button>
+            <input type="text" id="gate-input" placeholder="e.g., H Z" autocomplete="off">
+            <button id="run-btn">Run</button>
+            <button id="reset-btn">Reset</button>
         </div>
-        <div id="status">State: |0></div>
+
+        <div id="status">State: |0> (North Pole)</div>
+
+        <div class="tutorials">
+            <h3>Interactive Tutorials</h3>
+            <button class="preset-btn" data-sequence="X" data-title="The Bit Flip (X)" data-desc="The X-Gate acts like a classical NOT gate. It flips a 0 to a 1 by rotating 180 degrees around the X-axis.">1. Bit Flip</button>
+            <button class="preset-btn" data-sequence="H" data-title="Superposition (H)" data-desc="The Hadamard (H) gate puts the qubit into a perfect 50/50 superposition. The arrow drops to the equator, meaning a measurement is now a coin toss.">2. Superposition</button>
+            <button class="preset-btn" data-sequence="H Z" data-title="Phase Flip (H → Z)" data-desc="First, H creates a superposition. Then, Z flips the phase (rotating around the equator). The probabilities are still 50/50, but the quantum state is entirely different!">3. Phase Flip</button>
+            <button class="preset-btn" data-sequence="H H" data-title="Reversibility (H → H)" data-desc="Quantum operations are reversible! Applying an H-gate to a superposition undoes it, bringing the state perfectly back to 0.">4. Reversibility</button>
+        </div>
+
+        <div id="explanation-box" class="hidden">
+            <h4 id="exp-title"></h4>
+            <p id="exp-text"></p>
+        </div>
     </div>
 
     <div id="canvas-container"></div>
-
     <script src="index.js"></script>
 </body>
 </html>

@@ -10,7 +10,7 @@ container.appendChild(renderer.domElement);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-//Building the Bloch Sphere
+// building the bloch sphere
 const sphereGeo = new THREE.SphereGeometry(2, 32, 32);
 const sphereMat = new THREE.MeshBasicMaterial({ color: 0x444444, wireframe: true, transparent: true, opacity: 0.3 });
 const sphere = new THREE.Mesh(sphereGeo, sphereMat);
@@ -26,7 +26,7 @@ const axesHelper = new THREE.AxesHelper(2.5);
 scene.add(axesHelper);
 
 const origin = new THREE.Vector3(0, 0, 0);
-let currentDir = new THREE.Vector3(0, 1, 0); // default is north pole
+let currentDir = new THREE.Vector3(0, 1, 0); 
 const arrowHelper = new THREE.ArrowHelper(currentDir, origin, 2, 0x00e6ff, 0.4, 0.2);
 scene.add(arrowHelper);
 
@@ -41,33 +41,21 @@ let targetDir = new THREE.Vector3(0, 1, 0);
 let isAnimating = false;
 let gateQueue = [];
 
-// Rotations
 const gates = {
-    'X': { axis: new THREE.Vector3(0, 0, 1), angle: Math.PI },       // Rotate around Bloch X (Three Z)
-    'Y': { axis: new THREE.Vector3(1, 0, 0), angle: Math.PI },       // Rotate around Bloch Y (Three X)
-    'Z': { axis: new THREE.Vector3(0, 1, 0), angle: Math.PI },       // Rotate around Bloch Z (Three Y)
-    'H': { axis: new THREE.Vector3(0, 1, 1).normalize(), angle: Math.PI } // Diagonal between Bloch Z and X
+    'X': { axis: new THREE.Vector3(0, 0, 1), angle: Math.PI },
+    'Y': { axis: new THREE.Vector3(1, 0, 0), angle: Math.PI },
+    'Z': { axis: new THREE.Vector3(0, 1, 0), angle: Math.PI },
+    'H': { axis: new THREE.Vector3(0, 1, 1).normalize(), angle: Math.PI }
 };
 
-// ui interactions
-document.getElementById('run-btn').addEventListener('click', () => {
-    if (isAnimating) return;
-    
-    const input = document.getElementById('gate-input').value.toUpperCase().trim();
-    if (!input) return;
+// ui interactivity
+const expBox = document.getElementById('explanation-box');
+const expTitle = document.getElementById('exp-title');
+const expText = document.getElementById('exp-text');
+const statusText = document.getElementById('status');
+const gateInput = document.getElementById('gate-input');
 
-    const sequence = input.split(/\s+/).filter(g => gates[g]);
-    
-    if (sequence.length > 0) {
-        gateQueue = sequence;
-        document.getElementById('status').innerText = `Applying: ${sequence.join(' -> ')}`;
-        processNextGate();
-    } else {
-        document.getElementById('status').innerText = "Invalid gates. Use H, X, Y, Z.";
-    }
-});
-
-document.getElementById('reset-btn').addEventListener('click', () => {
+function resetSphere() {
     currentDir.set(0, 1, 0);
     targetDir.set(0, 1, 0);
     arrowHelper.setDirection(currentDir);
@@ -75,25 +63,69 @@ document.getElementById('reset-btn').addEventListener('click', () => {
     trailGeo.setFromPoints(trailPositions);
     gateQueue = [];
     isAnimating = false;
-    document.getElementById('status').innerText = "State: |0>";
-    document.getElementById('gate-input').value = "";
+    statusText.innerText = "State: |0> (North Pole)";
+    expBox.classList.add('hidden');
+}
+
+function startSequence(inputStr, title = null, desc = null) {
+    if (isAnimating) return;
+    
+  
+    if (trailPositions.length > 0) resetSphere();
+    
+    const sequence = inputStr.toUpperCase().trim().split(/\s+/).filter(g => gates[g]);
+    
+    if (sequence.length > 0) {
+        gateInput.value = sequence.join(' ');
+        gateQueue = sequence;
+        statusText.innerText = `Applying: ${sequence.join(' -> ')} (PS: it may take a moment to complete)`;
+        
+        
+        if (title && desc) {
+            expTitle.innerText = title;
+            expText.innerText = desc;
+            expBox.classList.remove('hidden');
+        } else {
+            expBox.classList.add('hidden');
+        }
+        
+        processNextGate();
+    } else {
+        statusText.innerText = "Invalid gates. Use H, X, Y, Z.";
+    }
+}
+
+document.getElementById('run-btn').addEventListener('click', () => {
+    startSequence(gateInput.value);
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+    gateInput.value = "";
+    resetSphere();
+});
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const seq = e.target.getAttribute('data-sequence');
+        const title = e.target.getAttribute('data-title');
+        const desc = e.target.getAttribute('data-desc');
+        startSequence(seq, title, desc);
+    });
 });
 
 function processNextGate() {
     if (gateQueue.length === 0) {
         isAnimating = false;
-        document.getElementById('status').innerText += " (Done)";
+        statusText.innerText += " (Done)";
         return;
     }
-
     isAnimating = true;
     const gate = gateQueue.shift();
     const operation = gates[gate];
-
     targetDir = currentDir.clone().applyAxisAngle(operation.axis, operation.angle);
 }
 
-// rendering
+//  rendering
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
@@ -107,11 +139,10 @@ function animate() {
         trailGeo.setFromPoints(trailPositions);
 
         if (currentDir.angleTo(targetDir) < 0.01) {
-            currentDir.copy(targetDir); 
+            currentDir.copy(targetDir);
             processNextGate(); 
         }
     }
-
     renderer.render(scene, camera);
 }
 
@@ -120,6 +151,5 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
 
 animate();
