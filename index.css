@@ -162,3 +162,41 @@ button:hover {
     color: #ddd;
     line-height: 1.4;
 }
+
+@media (max-width: 768px) {
+    #ui-container {
+        top: auto;
+        bottom: 20px;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+        max-width: none;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+
+    p {
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+    }
+
+    input, button {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .input-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    #gate-input {
+        grid-column: span 2;
+    }
+}
